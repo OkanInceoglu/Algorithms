@@ -12,7 +12,7 @@ void merge(int arr[], int l, int m, int r) {
 		L[i] = arr[l + i];
 	}
 	for (int j = 0;j < n2;j++) {
-		R[j] = arr[r + j + 1];
+		R[j] = arr[m + j + 1];
 	}
 
 	int i = 0, j = 0, k = l;
