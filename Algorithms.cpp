@@ -1,7 +1,6 @@
 ﻿#include <iostream>
 #include <vector>
 using namespace std;
-
 bool PrimeNumber(int n) {
 	if (n <= 1)return false;
 	if (n == 2)return true;
@@ -26,41 +25,157 @@ void hanoi(int n, char from, char to, char aux) {
 	cout << "Move disk " << n << " from " << from << " to " << to << endl;
 	hanoi(n - 1, aux, to, from);
 }
-int evklid(int a, int b) {
+
+void bubbleSort(int arr[], int n) {
+	for (int i = 0;i < n - 1;i++) {
+		bool swapped = false;
+		for (int j = 0;j < n - i - 1;j++) {
+			if (arr[j] > arr[j + 1]) {
+				swap(arr[j + 1], arr[j]);
+				swapped = true;
+			}
+		}
+		cout << i + 1 << ".Step: ";
+		for (int k = 0;k < n;k++) {
+			cout << arr[k] << " ";
+		}
+		cout << endl;
+		if (!swapped) break;
+	}
+}
+
+void selectionSort(int arr[], int n) {
+	for (int i = 0;i < n - 1;i++) {
+		int min = i;
+		for (int j = i + 1;j < n;j++) {
+			if (arr[min] > arr[j]) {
+				min = j;
+			}
+		}
+		if (min != i) {
+			swap(arr[i], arr[min]);
+		}
+		cout << i + 1 << ".Step: ";
+		for (int k = 0;k < n;k++) {
+			cout << arr[k] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void insertionSort(int arr[], int n) {
+	for (int i = 1;i < n;i++) {
+		int key = arr[i];
+		int j = i - 1;
+		while (j >= 0 && arr[j] > key) {
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = key;
+		cout << i << ".Step: ";
+		for (int k = 0;k < n;k++) {
+			cout << arr[k] << " ";
+		}
+		cout << endl;
+	}
+}
+
+int gcdit(int a, int b) {
+	while (a != b) {
+		if (a > b)a -= b;
+		else b -= a;
+	}
+	return b;
+}
+int gcdrec(int a, int b) {
 	if (b == 0)return a;
-	return evklid(b, a % b);
+	return gcdrec(b, a % b);
 }
-int factorial(int n, vector <int>& dp) {
-	if (n == 0)return 1;
+
+int fibo(int n) {
+	if (n == 0)return 0;
+	if (n == 1)return 1;
+	return fibo(n - 1) + fibo(n - 2);
+}
+int fibonacii(int n, vector <int>& dp) {
+	if (n <= 1)return n;
 	if (dp[n] != -1)return dp[n];
-	return dp[n] = n * factorial(n - 1, dp);
-
+	return dp[n] = fibonacii(n - 1, dp) + fibonacii(n - 2, dp);
 }
-int fibonachii(int n, vector<int>& dp) {
-	if (n <= 1) return n;
 
-	if (dp[n] != -1) return dp[n];
-
-	return dp[n] = fibonachii(n - 1, dp) + fibonachii(n - 2, dp);
+int factiter(int n) {
+	int sum = 1;
+	for (int i = 2;i <= n;i++) {
+		sum *= i;
+	}
+	return sum;
 }
-int sum(int n, vector<int>& dp) {
-	if (n == 0) return 0;
-
-	if (dp[n] != -1) return dp[n];
-
-	return dp[n] = n + sum(n - 1, dp);
+int factrec(int n) {
+	if (n == 0)return 1;
+	return n * factrec(n - 1);
 }
+
+void sieve(int n) {
+	vector<bool>isPrime(n + 1, true);
+
+	isPrime[0] = isPrime[1] = false;
+
+	for (int i = 2;i * i <= n;i++) {
+		if (isPrime[i]) {
+			for (int j = i * i;j <= n;j += i) {
+				isPrime[j] = false;
+			}
+		}
+	}
+
+	for (int k = 2;k <= n;k++) {
+		if (isPrime[k]) {
+			cout << k << " | ";
+		}
+	}
+}
+
+
 int main() {
-	vector <int> dpf(5 + 1, -1);
-	cout << factorial(5, dpf) << endl;
-	vector <int> d(5 + 1, -1);
-	cout << sum(5, d) << endl;
-	vector<int> dp(5 + 1, -1);
-	cout << fibonachii(5, dp) << endl;
-	cout << evklid(18, 48) << endl;
-	hanoi(3, 'A', 'C', 'B');
+	cout << "Prime test 7: " << PrimeNumber(7) << endl;
+	cout << "Prime test 10: " << PrimeNumber(10) << endl;
+
+	cout << "Reverse (end with '.'): ";
 	Reverse();
 	cout << endl;
-	cout << PrimeNumber(47);
+
+	cout << "\nHanoi (3 disks):\n";
+	hanoi(3, 'A', 'C', 'B');
+
+	int arr1[] = { 5, 1, 4, 2, 8 };
+	int n1 = 5;
+	cout << "\nBubble Sort:\n";
+	bubbleSort(arr1, n1);
+
+	int arr2[] = { 64, 25, 12, 22, 11 };
+	int n2 = 5;
+	cout << "\nSelection Sort:\n";
+	selectionSort(arr2, n2);
+
+	int arr3[] = { 9, 5, 1, 4, 3 };
+	int n3 = 5;
+	cout << "\nInsertion Sort:\n";
+	insertionSort(arr3, n3);
+
+	cout << "\nGCD iterative (48,18): " << gcdit(48, 18) << endl;
+	cout << "GCD recursive (48,18): " << gcdrec(48, 18) << endl;
+
+	cout << "\nFibo(6): " << fibo(6) << endl;
+
+	vector<int> dp(20, -1);
+	cout << "Fibo DP (10): " << fibonacii(10, dp) << endl;
+
+	cout << "\nFactorial iter (5): " << factiter(5) << endl;
+	cout << "Factorial rec (5): " << factrec(5) << endl;
+
+	cout << "\nSieve (20): ";
+	sieve(20);
+	cout << endl;
+
 	return 0;
 }
